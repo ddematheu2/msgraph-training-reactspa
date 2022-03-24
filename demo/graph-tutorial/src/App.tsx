@@ -10,9 +10,10 @@ import ProvideAppContext from './AppContext';
 import ErrorMessage from './ErrorMessage';
 import NavBar from './NavBar';
 import Welcome from './Welcome';
-import Calendar from './Calendar';
 import NewEvent from './NewEvent';
 import 'bootstrap/dist/css/bootstrap.css';
+import CallScreen from './CallScreen';
+import { RouteComponentProps } from 'react-router-dom';
 
 // <AppPropsSnippet>
 type AppProps= {
@@ -30,16 +31,20 @@ export default function App({ pca }: AppProps) {
           <Container>
             <ErrorMessage />
             <Route exact path="/"
-              render={(props) =>
+              render={(props: RouteComponentProps) =>
                 <Welcome {...props} />
               } />
-            <Route exact path="/calendar"
-              render={(props) =>
-                <Calendar {...props} />
+            <Route exact path="/create-event"
+              render={(props: RouteComponentProps) =>
+                <NewEvent {...props} />
               } />
             <Route exact path="/newevent"
-              render={(props) =>
+              render={(props: RouteComponentProps) =>
                 <NewEvent {...props} />
+              } />
+            <Route exact path="/join"
+              render={(props: RouteComponentProps) =>
+                <CallScreen {...props} />
               } />
           </Container>
         </Router>

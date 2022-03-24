@@ -6,11 +6,13 @@ import React from 'react';
 import { Event } from 'microsoft-graph';
 import { format } from 'date-fns';
 import { parseISO } from 'date-fns/esm';
+import { NavLink as RouterNavLink } from 'react-router-dom';
 
 type CalendarDayRowProps = {
   date: Date,
   timeFormat: string,
-  events: Event[]
+  events: Event[],
+  register?: boolean
 };
 
 interface FormatMap {
@@ -70,6 +72,8 @@ export default function CalendarDayRow(props: CalendarDayRowProps) {
               <td>
                 <div className="calendar-view-subject">{event.subject}</div>
                 <div className="calendar-view-organizer">{event.organizer?.emailAddress?.name}</div>
+                {console.log(event.onlineMeeting?.joinUrl)}
+                <button><RouterNavLink to={"/join?url="+ event.onlineMeeting?.joinUrl} className="nav-link" exact>Join</RouterNavLink></button>
               </td>
             </tr>
           )

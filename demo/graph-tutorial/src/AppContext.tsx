@@ -8,12 +8,12 @@ import React, {
   useState,
   MouseEventHandler,
   useEffect} from 'react';
-
 import config from './Config';
 import { AuthCodeMSALBrowserAuthenticationProvider } from '@microsoft/microsoft-graph-client/authProviders/authCodeMsalBrowser';
 import { InteractionType, PublicClientApplication } from '@azure/msal-browser';
 import { useMsal } from '@azure/msal-react';
 import { getUser } from './GraphService';
+import { Event } from 'microsoft-graph';
 
 // <AppContextSnippet>
 export interface AppUser {
@@ -29,6 +29,11 @@ export interface AppError {
   debug?: string
 };
 
+export interface Registrants {
+  email: string,
+  joinUrl: string
+}
+
 type AppContext = {
   user?: AppUser;
   error?: AppError;
@@ -37,6 +42,10 @@ type AppContext = {
   displayError?: Function;
   clearError?: Function;
   authProvider?: AuthCodeMSALBrowserAuthenticationProvider;
+  setCurEvent?: Function;
+  curEvent?: Event;
+  setRegistrants?: Function;
+  registrants?: Registrants;
 }
 
 const appContext = createContext<AppContext>({
@@ -46,7 +55,11 @@ const appContext = createContext<AppContext>({
   signOut: undefined,
   displayError: undefined,
   clearError: undefined,
-  authProvider: undefined
+  authProvider: undefined,
+  setCurEvent: undefined,
+  curEvent: undefined,
+  setRegistrants: undefined,
+  registrants: undefined,
 });
 
 export function useAppContext(): AppContext {
@@ -70,6 +83,8 @@ export default function ProvideAppContext({ children }: ProvideAppContextProps) 
 function useProvideAppContext() {
   const [user, setUser] = useState<AppUser | undefined>(undefined);
   const [error, setError] = useState<AppError | undefined>(undefined);
+  const [curEvent, setCurEvent] = useState<Event | undefined>(undefined);
+  const [registrants, setRegistrants] = useState<Registrants | undefined>(undefined);
 
   const msal = useMsal();
 
@@ -153,6 +168,10 @@ function useProvideAppContext() {
     signOut,
     displayError,
     clearError,
-    authProvider
+    authProvider,
+    curEvent,
+    registrants,
+    setCurEvent,
+    setRegistrants,
   };
 }

@@ -6,7 +6,7 @@ import { Client, GraphRequestOptions, PageCollection, PageIterator } from '@micr
 import { AuthCodeMSALBrowserAuthenticationProvider } from '@microsoft/microsoft-graph-client/authProviders/authCodeMsalBrowser';
 import { endOfWeek, startOfWeek } from 'date-fns';
 import { zonedTimeToUtc } from 'date-fns-tz';
-import { User, Event } from 'microsoft-graph';
+import { User, Event, OnlineMeeting } from 'microsoft-graph';
 
 let graphClient: Client | undefined = undefined;
 
@@ -57,6 +57,8 @@ export async function getUserWeekCalendar(authProvider: AuthCodeMSALBrowserAuthe
     .top(25)
     .get();
 
+  console.log(response);
+
   if (response["@odata.nextLink"]) {
     // Presence of the nextLink property indicates more results are available
     // Use a page iterator to get all results
@@ -93,6 +95,66 @@ export async function createEvent(authProvider: AuthCodeMSALBrowserAuthenticatio
   // request body
   return await graphClient!
     .api('/me/events')
+    .header("Prefer", "outlook.timezone=\"Pacific Standard Time\"")
     .post(newEvent);
 }
 // </CreateEventSnippet>
+
+export async function getMeeting(authProvider: AuthCodeMSALBrowserAuthenticationProvider,
+  joinURL: string): Promise<OnlineMeeting> {
+ensureClient(authProvider);
+
+let response = await graphClient!
+.api('/me/onlineMeetings')
+.filter('JoinWebUrl eq \'' + joinURL + ' \'')
+.get();
+
+return response.value[0]
+
+}
+
+interface ExternalMeetingRegistration {
+  context: string,
+  type: string,
+  id: string,
+  allowedRegistrant: string
+}
+
+export async function setRegistration(authProvider: AuthCodeMSALBrowserAuthenticationProvider,
+  meetingId: string): Promise<ExternalMeetingRegistration> {
+ensureClient(authProvider);
+
+  const meetingRegistration = {
+    '@odata.type': '#microsoft.graph.externalMeetingRegistration',
+    allowedRegistrant: 'everyone'
+  };
+
+  return await graphClient!
+  .api('/me/onlineMeetings/' + meetingId + '/registration')
+  .version('beta')
+  .post(meetingRegistration);
+}
+
+interface ExternalMeetingRegistrant {
+  context: string,
+  type: string,
+  id: string,
+  joinWebUrl: string,
+  userId: string,
+  tenantId: string
+}
+
+export async function registerAttendee(authProvider: AuthCodeMSALBrowserAuthenticationProvider,
+  meetingId: string): Promise<ExternalMeetingRegistrant> {
+ensureClient(authProvider);
+
+  const meetingRegistrant = {
+    '@odata.type': '#microsoft.graph.externalMeetingRegistrant',
+    id: '9d96988d-a66a-46ce-aad7-0b245615b297'
+  };
+
+  return await graphClient!
+  .api('/me/onlineMeetings/' + meetingId + '/registration/registrants')
+  .version('beta')
+  .post(meetingRegistrant);
+}

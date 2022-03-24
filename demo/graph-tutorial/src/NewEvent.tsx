@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import { NavLink as RouterNavLink, Redirect, RouteComponentProps } from 'react-router-dom';
 import { Button, Col, Form, Row } from 'react-bootstrap';
 import { Attendee, Event } from 'microsoft-graph';
-import { createEvent } from './GraphService';
+import { createEvent, getMeeting, setRegistration } from './GraphService';
 import { useAppContext } from './AppContext';
 
 export default function NewEvent(props: RouteComponentProps) {
@@ -59,11 +59,29 @@ export default function NewEvent(props: RouteComponentProps) {
       body: body.length > 0 ? {
         contentType: 'text',
         content: body
-      } : undefined
+      } : undefined,
+      allowNewTimeProposals: true,
+      isOnlineMeeting: true,
+      onlineMeetingProvider: "teamsForBusiness"
     };
 
     try {
-      await createEvent(app.authProvider!, newEvent);
+      let event = await createEvent(app.authProvider!, newEvent);
+      console.log('event' + event);
+      if(event.onlineMeeting?.joinUrl)
+      {
+        let meeting = await getMeeting(app.authProvider!, event.onlineMeeting?.joinUrl)
+        console.log(meeting);
+        if(meeting.id)
+        {
+          console.log("lol");
+          let registration = await setRegistration(app.authProvider!, meeting.id)
+          console.log('registration' + registration);
+          if(event && app.setCurEvent)
+            app.setCurEvent(event);
+            console.log('current event' + app.curEvent);
+        }
+      }
       setRedirect(true);
     } catch (err) {
       app.displayError!('Error creating event', JSON.stringify(err));
@@ -71,7 +89,7 @@ export default function NewEvent(props: RouteComponentProps) {
   };
 
   if (redirect) {
-    return <Redirect to="/calendar" />
+    return <Redirect to="/" />
   }
 
   return(

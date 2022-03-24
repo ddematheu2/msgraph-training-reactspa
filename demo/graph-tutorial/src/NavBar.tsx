@@ -34,7 +34,7 @@ export default function NavBar() {
   return (
       <Navbar bg="dark" variant="dark" expand="md" fixed="top">
         <Container>
-          <Navbar.Brand href="/">React Graph Tutorial</Navbar.Brand>
+          <Navbar.Brand href="/">Contoso Events</Navbar.Brand>
           <Navbar.Toggle />
           <Navbar.Collapse>
             <Nav className="me-auto" navbar>
@@ -43,7 +43,7 @@ export default function NavBar() {
               </NavItem>
               <AuthenticatedTemplate>
                 <NavItem>
-                  <RouterNavLink to="/calendar" className="nav-link" exact>Calendar</RouterNavLink>
+                  <RouterNavLink to="/create-event" className="nav-link" exact>Create Event</RouterNavLink>
                 </NavItem>
               </AuthenticatedTemplate>
             </Nav>
