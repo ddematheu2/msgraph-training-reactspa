@@ -14,6 +14,7 @@ import NewEvent from './NewEvent';
 import 'bootstrap/dist/css/bootstrap.css';
 import CallScreen from './CallScreen';
 import { RouteComponentProps } from 'react-router-dom';
+import Register from './Register';
 
 // <AppPropsSnippet>
 type AppProps= {
@@ -41,6 +42,10 @@ export default function App({ pca }: AppProps) {
             <Route exact path="/newevent"
               render={(props: RouteComponentProps) =>
                 <NewEvent {...props} />
+              } />
+            <Route exact path="/register"
+              render={(props: RouteComponentProps) =>
+                <Register {...props} />
               } />
             <Route exact path="/join"
               render={(props: RouteComponentProps) =>

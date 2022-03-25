@@ -48,11 +48,6 @@ export default function NavBar() {
               </AuthenticatedTemplate>
             </Nav>
             <Nav className="ms-auto align-items-center" navbar>
-              <NavItem>
-                <Nav.Link href="https://developer.microsoft.com/graph/docs/concepts/overview" target="_blank">
-                  Docs
-                </Nav.Link>
-              </NavItem>
               <AuthenticatedTemplate>
                 <NavDropdown title={<UserAvatar user={user} />} id="user-dropdown" align="end">
                   <h5 className="dropdown-item-text mb-0">{user.displayName}</h5>

@@ -13,7 +13,7 @@ import { AuthCodeMSALBrowserAuthenticationProvider } from '@microsoft/microsoft-
 import { InteractionType, PublicClientApplication } from '@azure/msal-browser';
 import { useMsal } from '@azure/msal-react';
 import { getUser } from './GraphService';
-import { Event } from 'microsoft-graph';
+import { Event, OnlineMeeting } from 'microsoft-graph';
 
 // <AppContextSnippet>
 export interface AppUser {
@@ -34,6 +34,11 @@ export interface Registrants {
   joinUrl: string
 }
 
+export interface Meeting {
+  meeting: OnlineMeeting,
+  registration: boolean
+}
+
 type AppContext = {
   user?: AppUser;
   error?: AppError;
@@ -42,10 +47,12 @@ type AppContext = {
   displayError?: Function;
   clearError?: Function;
   authProvider?: AuthCodeMSALBrowserAuthenticationProvider;
-  setCurEvent?: Function;
-  curEvent?: Event;
+  setMeetings?: Function;
+  selected?: number;
+  setSelected?: Function;
+  meetings?: Meeting[];
   setRegistrants?: Function;
-  registrants?: Registrants;
+  registrants?: Registrants[];
 }
 
 const appContext = createContext<AppContext>({
@@ -56,8 +63,10 @@ const appContext = createContext<AppContext>({
   displayError: undefined,
   clearError: undefined,
   authProvider: undefined,
-  setCurEvent: undefined,
-  curEvent: undefined,
+  setMeetings: undefined,
+  meetings: undefined,
+  selected: undefined,
+  setSelected: undefined,
   setRegistrants: undefined,
   registrants: undefined,
 });
@@ -83,8 +92,9 @@ export default function ProvideAppContext({ children }: ProvideAppContextProps) 
 function useProvideAppContext() {
   const [user, setUser] = useState<AppUser | undefined>(undefined);
   const [error, setError] = useState<AppError | undefined>(undefined);
-  const [curEvent, setCurEvent] = useState<Event | undefined>(undefined);
-  const [registrants, setRegistrants] = useState<Registrants | undefined>(undefined);
+  const [meetings, setMeetings] = useState<Meeting[] | undefined>([]);
+  const [registrants, setRegistrants] = useState<Registrants[] | undefined>([]);
+  const [selected, setSelected] = useState<number | undefined>(undefined);
 
   const msal = useMsal();
 
@@ -169,9 +179,11 @@ function useProvideAppContext() {
     displayError,
     clearError,
     authProvider,
-    curEvent,
+    meetings,
     registrants,
-    setCurEvent,
+    setMeetings,
     setRegistrants,
+    selected,
+    setSelected
   };
 }

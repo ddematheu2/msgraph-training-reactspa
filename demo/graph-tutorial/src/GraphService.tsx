@@ -120,7 +120,7 @@ interface ExternalMeetingRegistration {
   allowedRegistrant: string
 }
 
-export async function setRegistration(authProvider: AuthCodeMSALBrowserAuthenticationProvider,
+export async function createRegistration(authProvider: AuthCodeMSALBrowserAuthenticationProvider,
   meetingId: string): Promise<ExternalMeetingRegistration> {
 ensureClient(authProvider);
 
@@ -145,12 +145,12 @@ interface ExternalMeetingRegistrant {
 }
 
 export async function registerAttendee(authProvider: AuthCodeMSALBrowserAuthenticationProvider,
-  meetingId: string): Promise<ExternalMeetingRegistrant> {
+  email: string, meetingId: string): Promise<ExternalMeetingRegistrant> {
 ensureClient(authProvider);
 
   const meetingRegistrant = {
     '@odata.type': '#microsoft.graph.externalMeetingRegistrant',
-    id: '9d96988d-a66a-46ce-aad7-0b245615b297'
+    id: email
   };
 
   return await graphClient!

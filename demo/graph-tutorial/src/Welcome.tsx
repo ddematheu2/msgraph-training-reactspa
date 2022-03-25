@@ -15,7 +15,7 @@ import { isToday, startOfWeek } from 'date-fns';
 
 export default function Welcome(props: RouteComponentProps) {
   const app = useAppContext();
-
+  console.log(app.meetings?.length)
   return (
     <div className="p-5 mb-4 bg-light rounded-3">
       <Container fluid>
@@ -28,7 +28,7 @@ export default function Welcome(props: RouteComponentProps) {
             <h4>Welcome {app.user?.displayName || ''}!</h4>
             <p>Use the navigation bar at the top of the page create an event.</p>
           </div>
-          { app.curEvent && app.curEvent.start?.dateTime && <Table size="sm">
+          { app.meetings && app.meetings && <Table size="sm">
             <thead>
               <tr>
                 <th>Date</th>
@@ -37,13 +37,13 @@ export default function Welcome(props: RouteComponentProps) {
               </tr>
             </thead>
             <tbody>
-              <CalendarDayRow
-                date={new Date()}
+                <CalendarDayRow
                 timeFormat={app.user?.timeFormat!}
-                events={[app.curEvent]}
-                register = {true} />
+                events={app.meetings}
+                />
             </tbody>
           </Table> }
+          {app.meetings?.length! <= 0 && <div style={{textAlign:'center'}}>No events yet! Check back later!</div>}
         </AuthenticatedTemplate>
         <UnauthenticatedTemplate>
           <Button color="primary" onClick={app.signIn!}>Click here to sign in</Button>
