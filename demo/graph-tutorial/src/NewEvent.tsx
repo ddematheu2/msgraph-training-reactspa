@@ -54,12 +54,15 @@ export default function NewEvent(props: RouteComponentProps) {
 
     try {
       let event = await createEvent(app.authProvider!, newEvent);
+      console.log(event)
       if(event.onlineMeeting?.joinUrl)
       {
         let meeting = await getMeeting(app.authProvider!, event.onlineMeeting?.joinUrl)
+        console.log(meeting)
         if(registration)
         {
           let meetingRegistration = await createRegistration(app.authProvider!, meeting.id!)
+          console.log(meetingRegistration)
         }
         if(meeting && app.setMeetings)
         {

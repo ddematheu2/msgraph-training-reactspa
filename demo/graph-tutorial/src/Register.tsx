@@ -26,7 +26,7 @@ export default function Register(props: RouteComponentProps) {
     if(app.meetings)
     {
       let registration = await registerAttendee(app.authProvider!, email, String(params.meeting));
-
+      console.log(registration)
       if(registration)
       {
         let registrant = {
