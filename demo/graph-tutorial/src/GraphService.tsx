@@ -86,6 +86,8 @@ export async function getUserWeekCalendar(authProvider: AuthCodeMSALBrowserAuthe
 // </GetUserWeekCalendarSnippet>
 
 // <CreateEventSnippet>
+// https://docs.microsoft.com/en-us/graph/api/calendar-post-events?view=graph-rest-beta&tabs=javascript
+// Event passed from NewEvent
 export async function createEvent(authProvider: AuthCodeMSALBrowserAuthenticationProvider,
                                   newEvent: Event): Promise<Event> {
   ensureClient(authProvider);
@@ -100,6 +102,8 @@ export async function createEvent(authProvider: AuthCodeMSALBrowserAuthenticatio
 }
 // </CreateEventSnippet>
 
+// <GetOnlineMeetingSnippet>
+//https://docs.microsoft.com/en-us/graph/api/onlinemeeting-get?view=graph-rest-beta&tabs=http
 export async function getMeeting(authProvider: AuthCodeMSALBrowserAuthenticationProvider,
   joinURL: string): Promise<OnlineMeeting> {
 ensureClient(authProvider);
@@ -112,6 +116,10 @@ let response = await graphClient!
 return response.value[0]
 
 }
+// </GetOnlineMeetingSnippet>
+
+// <CreateExternalRegistration>
+//https://docs.microsoft.com/en-us/graph/api/externalmeetingregistration-post?view=graph-rest-beta&tabs=http
 
 interface ExternalMeetingRegistration {
   context: string,
@@ -135,6 +143,10 @@ ensureClient(authProvider);
   .post(meetingRegistration);
 }
 
+// </CreateExternalRegistration>
+
+// <CreateExternalRegistrant>
+// https://docs.microsoft.com/en-us/graph/api/externalmeetingregistrant-post?view=graph-rest-beta&tabs=http
 interface ExternalMeetingRegistrant {
   context: string,
   type: string,
@@ -158,3 +170,5 @@ ensureClient(authProvider);
   .version('beta')
   .post(meetingRegistrant);
 }
+
+// </CreateExternalRegistration>

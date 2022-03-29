@@ -48,9 +48,8 @@ export default function NewEvent(props: RouteComponentProps) {
         contentType: 'text',
         content: body
       } : undefined,
-      allowNewTimeProposals: true,
-      isOnlineMeeting: true,
-      onlineMeetingProvider: "teamsForBusiness"
+      isOnlineMeeting: true, //
+      onlineMeetingProvider: "teamsForBusiness" //
     };
 
     try {
