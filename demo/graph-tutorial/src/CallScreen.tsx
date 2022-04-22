@@ -50,21 +50,6 @@ export default function CallScreen(props: RouteComponentProps) {
       }
   }, [user]);
 
-  // useEffect(() => {
-  //   console.log(adapter)
-  //   return () => {
-  //     (async () => {
-  //       if (!adapter) {
-  //         return;
-  //       }
-  //       await adapter.leaveCall().catch((e) => {
-  //         console.error('Failed to leave call', e);
-  //       });
-  //       adapter.dispose();
-  //     })();
-  //   };
-  // }, [adapter]);
-
   if (adapter) {
     return (
       <div style={{ height: '90vh', width: '80vw' }}>

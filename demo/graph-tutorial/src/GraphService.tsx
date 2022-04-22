@@ -102,16 +102,16 @@ export async function createEvent(authProvider: AuthCodeMSALBrowserAuthenticatio
 
 export async function getMeeting(authProvider: AuthCodeMSALBrowserAuthenticationProvider,
   joinURL: string): Promise<OnlineMeeting> {
-ensureClient(authProvider);
+  ensureClient(authProvider);
 
-let response = await graphClient!
-.api('/me/onlineMeetings')
-.filter('JoinWebUrl eq \'' + joinURL + ' \'')
-.get();
+  let response = await graphClient!
+  .api('/me/onlineMeetings')
+  .filter('JoinWebUrl eq \'' + joinURL + ' \'')
+  .get();
 
-return response.value[0]
+  return response.value[0]
 
-}
+  }
 
 interface ExternalMeetingRegistration {
   context: string,
@@ -122,7 +122,7 @@ interface ExternalMeetingRegistration {
 
 export async function createRegistration(authProvider: AuthCodeMSALBrowserAuthenticationProvider,
   meetingId: string): Promise<ExternalMeetingRegistration> {
-ensureClient(authProvider);
+  ensureClient(authProvider);
 
   const meetingRegistration = {
     '@odata.type': '#microsoft.graph.externalMeetingRegistration',
@@ -146,7 +146,7 @@ interface ExternalMeetingRegistrant {
 
 export async function registerAttendee(authProvider: AuthCodeMSALBrowserAuthenticationProvider,
   email: string, meetingId: string): Promise<ExternalMeetingRegistrant> {
-ensureClient(authProvider);
+  ensureClient(authProvider);
 
   const meetingRegistrant = {
     '@odata.type': '#microsoft.graph.externalMeetingRegistrant',

@@ -26,23 +26,18 @@ export default function Register(props: RouteComponentProps) {
     if(app.meetings)
     {
       let registration = await registerAttendee(app.authProvider!, email, String(params.meeting));
-
+      console.log(registration.joinWebUrl);
       if(registration)
       {
         let registrant = {
           email: email,
           joinUrl: registration.joinWebUrl
         }
-        console.log(registrant)
+        fetch('https://acssendemailtest.azurewebsites.net/api/Function1?email=' + registrant.email + '&link="' + registration.joinWebUrl + '"')
         setRegistered(registrant);
-        //app.setRegistrants!(...app.registrants!, registrant)
       }
     } 
   };
-
-  if(registered){
-    //setFormDisabled(true)
-  }
 
   return(
     <>
@@ -66,6 +61,7 @@ export default function Register(props: RouteComponentProps) {
       </Form>
       <br/>
       <div>
+        {registered && <p>Email registration sent!</p>}
         {registered && <button><RouterNavLink to={"/join?url=" + registered.joinUrl} className="nav-link" exact>Join Event</RouterNavLink></button>}
       </div>
     </>
