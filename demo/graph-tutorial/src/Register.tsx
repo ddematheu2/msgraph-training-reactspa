@@ -33,7 +33,6 @@ export default function Register(props: RouteComponentProps) {
           email: email,
           joinUrl: registration.joinWebUrl
         }
-        fetch('https://acssendemailtest.azurewebsites.net/api/Function1?email=' + registrant.email + '&link="' + registration.joinWebUrl + '"')
         setRegistered(registrant);
       }
     } 
@@ -61,7 +60,6 @@ export default function Register(props: RouteComponentProps) {
       </Form>
       <br/>
       <div>
-        {registered && <p>Email registration sent!</p>}
         {registered && <button><RouterNavLink to={"/join?url=" + registered.joinUrl} className="nav-link" exact>Join Event</RouterNavLink></button>}
       </div>
     </>
