@@ -23,7 +23,7 @@ export default function CallScreen(props: RouteComponentProps) {
   const url = params.url ? String(params.url) : "";
 
   useEffect(() => {
-    fetch('https://test-acs-auth.azurewebsites.net/api/ACSTestFunction?')
+    fetch('INSERT_FUNCTION_URL')
     .then(response => response.json())
     .then(data => {
         const credential = new AzureCommunicationTokenCredential(data.userToken.token)

@@ -33,6 +33,7 @@ export default function Register(props: RouteComponentProps) {
           email: email,
           joinUrl: registration.joinWebUrl
         }
+        fetch('INSERT_FUNCTION_URL' + registrant.email + '&link="' + registration.joinWebUrl + '"')
         setRegistered(registrant);
       }
     } 
